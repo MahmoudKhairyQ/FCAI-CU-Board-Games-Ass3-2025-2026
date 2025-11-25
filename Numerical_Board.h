@@ -18,4 +18,35 @@ public:
     bool isNumberUsed(int num);                  // Check if number is already used
 };
 
+class SUSBoard {
+private:
+    char board[3][3];
+    bool claimed[8];
+
+    bool lineMatchesSUS(int lineIdx) const;
+
+public:
+    SUSBoard();
+    bool placeLetter(int row, int col, char letter, int& pointsScored);
+    bool isFull() const;
+    void displayBoard() const;
+};
+
+class ObstaclesBoard {
+private:
+    char board[6][6];
+    int obstaclesCount;
+    int movesCount;
+
+public:
+    ObstaclesBoard();
+    bool placeMove(int row, int col, char symbol);
+    void addRandomObstacles();
+    bool checkWin(char symbol);
+    bool checkDraw();
+    bool isGameOver();
+    void displayBoard();
+    bool isValidMove(int row, int col);
+};
+
 #endif
