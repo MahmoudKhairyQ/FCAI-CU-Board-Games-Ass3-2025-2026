@@ -126,7 +126,7 @@ class Player {
 protected:
     string name;         ///< Player name
     PlayerType type;     ///< Player type (e.g., HUMAN or COMPUTER)
-    T symbol;            ///< Player’s symbol on board
+    T symbol;            ///< Player�s symbol on board
     Board<T>* boardPtr;  ///< Pointer to the game board
 
 public:
@@ -134,7 +134,7 @@ public:
      * @brief Construct a player with name, symbol, and type.
      */
     Player(string n, T s, PlayerType t)
-        : name(n), symbol(s), type(t), boardPtr(nullptr) {}
+        : name(n), type(t), symbol(s), boardPtr(nullptr) {} 
 
     virtual ~Player() {}
 

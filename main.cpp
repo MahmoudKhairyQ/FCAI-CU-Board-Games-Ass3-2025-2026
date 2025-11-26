@@ -1,10 +1,19 @@
+#include "BoardGame_Classes.h"
 #include "Numerical_Board.h"
 #include "Numerical_UI.h"
+#include "SUS_Board.h"
+#include "SUS_UI.h"
+#include "FiveXFive_Board.h"
+#include "FiveXFive_UI.h"
+#include "Misere_Board.h"
+#include "Misere_UI.h"
+#include "Obstacles_Board.h"
+#include "Obstacles_UI.h"
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
-void displayMenu()
-{
+void displayMenu() {
     cout << "\n";
     cout << "========================================" << endl;
     cout << "     WELCOME TO OUR GAMES APP" << endl;
@@ -12,7 +21,7 @@ void displayMenu()
     cout << "\n  Please select a game to play:\n" << endl;
     cout << "  [1]  SUS" << endl;
     cout << "  [2]  Four-in-a-row" << endl;
-    cout << "[3]  5×5 Tic Tac Toe" << endl;
+    cout << "  [3]  5×5 Tic Tac Toe" << endl;
     cout << "  [4]  Word Tic-Tac-Toe" << endl;
     cout << "  [5]  Misère Tic-Tac-Toe" << endl;
     cout << "  [6]  Diamond Tic-Tac-Toe" << endl;
@@ -21,101 +30,141 @@ void displayMenu()
     cout << "  [9]  Numerical Tic-Tac-Toe" << endl;
     cout << "  [10] Obstacles Tic-Tac-Toe" << endl;
     cout << "  [11] Infinity Tic-Tac-Toe" << endl;
-    cout << "\n  [12] Exit" << endl;
+    cout << "  [12] Ultimate Tic Tac Toe" << endl;
+    cout << "  [13] Memory Tic-Tac-Toe" << endl;
+    cout << "\n  [14] Exit" << endl;
     cout << "\n========================================" << endl;
     cout << "Enter your choice: ";
 }
 
-void chooseGame(int choice)
-{
-    string game_name;
-    cout << "\n";
-    if (choice == 1)
-    {
-        game_name = "SUS";
-        cout << game_name << " loaded." << endl;
-        SUSBoard susBoard;
-        SUSUI susUI(susBoard);
-        susUI.playGame();
-    }
-    else if (choice == 2)
-    {
-        game_name = "Four-in-a-row";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 3)
-    {
-        game_name = "5x5 Tic Tac Toe";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 4)
-    {
-        game_name = "Word Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 5)
-    {
-        game_name = "Misère Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 6)
-    {
-        game_name = "Diamond Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 7)
-    {
-        game_name = "4x4 Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 8)
-    {
-        game_name = "Pyramid Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 9)
-    {
+void playNumericalGame() {
+    cout << "\n=== Starting Numerical Tic-Tac-Toe ===\n" << endl;
 
-        game_name = "Numerical Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-        NumericalBoard board;
-        NumericalUI ui(board);
-        ui.playGame();
+    NumericalBoard* board = new NumericalBoard();
+    NumericalUI* ui = new NumericalUI("Numerical Tic-Tac-Toe");
+    Player<int>** players = ui->setup_players();
+    GameManager<int> game(board, players, ui);
+    game.run();
 
-    }
-    else if (choice == 10)
-    {
-        game_name = "Obstacles Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-        ObstaclesBoard board;
-        ObstaclesUI ui(board);
-        ui.playGame();
-    }
-    else if (choice == 11)
-    {
-        game_name = "Infinity Tic-Tac-Toe";
-        cout << game_name << " loaded." << endl;
-    }
-    else if (choice == 12)
-    {
-        cout << "\n Exiting the application. Goodbye!\n" << endl;
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
+void playSUSGame() {
+    cout << "\n=== Starting SUS Game ===\n" << endl;
+
+    SUSBoard* board = new SUSBoard();
+    SUSUI* ui = new SUSUI("SUS Game");
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
+void playFiveXFiveGame() {
+    cout << "\n=== Starting 5x5 Tic Tac Toe ===\n" << endl;
+
+    FiveXFiveBoard* board = new FiveXFiveBoard();
+    FiveXFiveUI* ui = new FiveXFiveUI("5x5 Tic Tac Toe");
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
+void playMisereGame() {
+    cout << "\n=== Starting Misère Tic-Tac-Toe ===\n" << endl;
+    cout << "Rules: Avoid making three in a row! If you make three in a row, you LOSE!\n" << endl;
+
+    MisereBoard* board = new MisereBoard();
+    MisereUI* ui = new MisereUI("Misère Tic-Tac-Toe");
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
+void playObstaclesGame() {
+    cout << "\n=== Starting Obstacles Tic-Tac-Toe ===\n" << endl;
+
+    ObstaclesBoard* board = new ObstaclesBoard();
+    ObstaclesUI* ui = new ObstaclesUI("Obstacles Tic-Tac-Toe");
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
+void chooseGame(int choice) {
+    switch (choice) {
+    case 1: playSUSGame(); break;
+    case 2: cout << "Four-in-a-row - Coming soon!\n"; break;
+    case 3: playFiveXFiveGame(); break;
+    case 4: cout << "Word Tic-Tac-Toe - Coming soon!\n"; break;
+    case 5: playMisereGame(); break;
+    case 6: cout << "Diamond Tic-Tac-Toe - Coming soon!\n"; break;
+    case 7: cout << "4x4 Tic-Tac-Toe - Coming soon!\n"; break;
+    case 8: cout << "Pyramid Tic-Tac-Toe - Coming soon!\n"; break;
+    case 9: playNumericalGame(); break;
+    case 10: playObstaclesGame(); break;
+    case 11: cout << "Infinity Tic-Tac-Toe - Coming soon!\n"; break;
+    case 12: cout << "Ultimate Tic Tac Toe - Coming soon!\n"; break;
+    case 13: cout << "Memory Tic-Tac-Toe - Coming soon!\n"; break;
+    case 14:
+        cout << "\nExiting the application. Goodbye!\n" << endl;
         exit(0);
+        break;
+    default: cout << "Invalid choice!" << endl; break;
     }
 }
+
 int main() {
-    while (true)
-    {
+    cout << "Initializing Games Application..." << endl;
+
+    while (true) {
         int choice;
         displayMenu();
-        cin >> choice;
 
-        if (choice > 12 || choice < 1)
-        {
-            cout << "\n Invalid choice. Please try again.\n" << endl;
+        if (!(cin >> choice)) {
+            cout << "\nInvalid input. Please enter a number.\n" << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
+
+        if (choice < 1 || choice > 14) {
+            cout << "\nInvalid choice. Please enter a number between 1 and 14.\n" << endl;
             continue;
         }
 
         chooseGame(choice);
+
+        cout << "\nPress Enter to continue to main menu...";
+        cin.ignore();
+        cin.get();
     }
 
     return 0;
