@@ -7,6 +7,8 @@
 #include "FiveXFive_UI.h"
 #include "Misere_Board.h"
 #include "Misere_UI.h"
+#include "FourXFour_Board.h"
+#include "FourXFour_UI.h"
 #include "Obstacles_Board.h"
 #include "Obstacles_UI.h"
 #include <iostream>
@@ -21,11 +23,11 @@ void displayMenu() {
     cout << "\n  Please select a game to play:\n" << endl;
     cout << "  [1]  SUS" << endl;
     cout << "  [2]  Four-in-a-row" << endl;
-    cout << "  [3]  5×5 Tic Tac Toe" << endl;
+    cout << "  [3]  5x5 Tic Tac Toe" << endl;
     cout << "  [4]  Word Tic-Tac-Toe" << endl;
     cout << "  [5]  Misère Tic-Tac-Toe" << endl;
     cout << "  [6]  Diamond Tic-Tac-Toe" << endl;
-    cout << "  [7]  4×4 Tic-Tac-Toe" << endl;
+    cout << "  [7]  4x4 Tic-Tac-Toe" << endl;
     cout << "  [8]  Pyramid Tic-Tac-Toe" << endl;
     cout << "  [9]  Numerical Tic-Tac-Toe" << endl;
     cout << "  [10] Obstacles Tic-Tac-Toe" << endl;
@@ -118,6 +120,22 @@ void playObstaclesGame() {
     delete board;
 }
 
+void playFourXFourGame() {
+    cout << "\n=== Starting 4x4 Tic Tac Toe ===\n" << endl;
+
+    FourXFourBoard* board = new FourXFourBoard();
+    FourXFourUI* ui = new FourXFourUI("4x4 Tic Tac Toe");
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
 void chooseGame(int choice) {
     switch (choice) {
     case 1: playSUSGame(); break;
@@ -126,7 +144,7 @@ void chooseGame(int choice) {
     case 4: cout << "Word Tic-Tac-Toe - Coming soon!\n"; break;
     case 5: playMisereGame(); break;
     case 6: cout << "Diamond Tic-Tac-Toe - Coming soon!\n"; break;
-    case 7: cout << "4x4 Tic-Tac-Toe - Coming soon!\n"; break;
+    case 7: playFourXFourGame(); break;
     case 8: cout << "Pyramid Tic-Tac-Toe - Coming soon!\n"; break;
     case 9: playNumericalGame(); break;
     case 10: playObstaclesGame(); break;
