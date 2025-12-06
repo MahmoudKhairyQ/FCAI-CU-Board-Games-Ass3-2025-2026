@@ -11,6 +11,8 @@
 #include "FourXFour_UI.h"
 #include "Obstacles_Board.h"
 #include "Obstacles_UI.h"
+#include "FourInARow_Board.h"
+#include "FourInARow_UI.h"
 #include <iostream>
 #include <cstdlib>
 using namespace std;
@@ -27,7 +29,7 @@ void displayMenu() {
     cout << "  [4]  Word Tic-Tac-Toe" << endl;
     cout << "  [5]  Misère Tic-Tac-Toe" << endl;
     cout << "  [6]  Diamond Tic-Tac-Toe" << endl;
-    cout << "  [7]  4x4 Tic-Tac-Toe" << endl;
+    cout << "  [7]  4x4 Tic Tac Toe" << endl;
     cout << "  [8]  Pyramid Tic-Tac-Toe" << endl;
     cout << "  [9]  Numerical Tic-Tac-Toe" << endl;
     cout << "  [10] Obstacles Tic-Tac-Toe" << endl;
@@ -120,6 +122,23 @@ void playObstaclesGame() {
     delete board;
 }
 
+void playFourInARowGame() {
+    cout << "\n=== Starting Four-in-a-row (Connect 4) ===\n" << endl;
+    cout << "Rules: Drop your pieces in columns. First to get 4 in a row wins!\n" << endl;
+
+    FourInARowBoard* board = new FourInARowBoard();
+    FourInARowUI* ui = new FourInARowUI("Four-in-a-row");
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
 void playFourXFourGame() {
     cout << "\n=== Starting 4x4 Tic Tac Toe ===\n" << endl;
 
@@ -139,7 +158,7 @@ void playFourXFourGame() {
 void chooseGame(int choice) {
     switch (choice) {
     case 1: playSUSGame(); break;
-    case 2: cout << "Four-in-a-row - Coming soon!\n"; break;
+    case 2: playFourInARowGame(); break;
     case 3: playFiveXFiveGame(); break;
     case 4: cout << "Word Tic-Tac-Toe - Coming soon!\n"; break;
     case 5: playMisereGame(); break;
