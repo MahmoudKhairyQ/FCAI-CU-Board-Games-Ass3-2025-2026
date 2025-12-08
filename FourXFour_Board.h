@@ -15,4 +15,4 @@ public:
     int countThreeInRow(char symbol);
 };
 
-#endif#pragma once
+#endif

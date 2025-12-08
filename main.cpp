@@ -13,6 +13,8 @@
 #include "Obstacles_UI.h"
 #include "FourInARow_Board.h"
 #include "FourInARow_UI.h"
+#include "Diamond_Board.h"
+#include "Diamond_UI.h"
 #include <iostream>
 #include <cstdlib>
 using namespace std;
@@ -155,6 +157,30 @@ void playFourXFourGame() {
     delete board;
 }
 
+void playDiamondGame() {
+    // cout << "\n=== Starting Diamond Tic-Tac-Toe ===\n" << endl;
+    // cout << "Rules: You must make a line of 3 AND a line of 4 at the same time!\n";
+    // cout << "       The two lines must be in different directions (horizontal, vertical, diagonal)\n";
+    // cout << "       They can share only one common cell.\n" << endl;
+
+    try {
+        DiamondBoard* board = new DiamondBoard();
+        DiamondUI* ui = new DiamondUI("Diamond Tic-Tac-Toe");
+        Player<char>** players = ui->setup_players();
+        GameManager<char> game(board, players, ui);
+        game.run();
+
+        delete players[0];
+        delete players[1];
+        delete[] players;
+        delete ui;
+        delete board;
+    }
+    catch (const exception& e) {
+        cout << "Error starting Diamond game: " << e.what() << endl;
+    }
+}
+
 void chooseGame(int choice) {
     switch (choice) {
     case 1: playSUSGame(); break;
@@ -162,7 +188,7 @@ void chooseGame(int choice) {
     case 3: playFiveXFiveGame(); break;
     case 4: cout << "Word Tic-Tac-Toe - Coming soon!\n"; break;
     case 5: playMisereGame(); break;
-    case 6: cout << "Diamond Tic-Tac-Toe - Coming soon!\n"; break;
+    case 6: playDiamondGame(); break;
     case 7: playFourXFourGame(); break;
     case 8: cout << "Pyramid Tic-Tac-Toe - Coming soon!\n"; break;
     case 9: playNumericalGame(); break;

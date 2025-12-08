@@ -16,4 +16,4 @@ public:
     Player<char>* create_player(string& name, char symbol, PlayerType type) override;
 };
 
-#endif#pragma once
+#endif
