@@ -17,6 +17,7 @@
 #include "Diamond_UI.h"
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 using namespace std;
 
 void displayMenu() {
@@ -24,21 +25,21 @@ void displayMenu() {
     cout << "========================================" << endl;
     cout << "     WELCOME TO OUR GAMES APP" << endl;
     cout << "========================================" << endl;
-    cout << "\n  Please select a game to play:\n" << endl;
-    cout << "  [1]  SUS" << endl;
-    cout << "  [2]  Four-in-a-row" << endl;
-    cout << "  [3]  5x5 Tic Tac Toe" << endl;
-    cout << "  [4]  Word Tic-Tac-Toe" << endl;
-    cout << "  [5]  Misère Tic-Tac-Toe" << endl;
-    cout << "  [6]  Diamond Tic-Tac-Toe" << endl;
-    cout << "  [7]  4x4 Tic Tac Toe" << endl;
-    cout << "  [8]  Pyramid Tic-Tac-Toe" << endl;
-    cout << "  [9]  Numerical Tic-Tac-Toe" << endl;
-    cout << "  [10] Obstacles Tic-Tac-Toe" << endl;
-    cout << "  [11] Infinity Tic-Tac-Toe" << endl;
-    cout << "  [12] Ultimate Tic Tac Toe" << endl;
-    cout << "  [13] Memory Tic-Tac-Toe" << endl;
-    cout << "\n  [14] Exit" << endl;
+    cout << "\nChoose your option:" << endl;
+    cout << "1) SUS" << endl;
+    cout << "2) Four-in-a-row" << endl;
+    cout << "3) 5 x 5 Tic Tac Toe" << endl;
+    cout << "4) Word Tic-tac-toe" << endl;
+    cout << "5) Misere Tic Tac Toe" << endl;
+    cout << "6) Diamond Tic-Tac-Toe" << endl;
+    cout << "7) 4 x 4 Tic-Tac-Toe" << endl;
+    cout << "8) Pyramid Tic-Tac-Toe" << endl;
+    cout << "9) Numerical Tic-Tac-Toe" << endl;
+    cout << "10) Obstacles Tic-Tac-Toe" << endl;
+    cout << "11) Infinity Tic-Tac-Toe" << endl;
+    cout << "12) Ultimate Tic Tac Toe" << endl;
+    cout << "13) Memory Tic-Tac-Toe" << endl;
+    cout << "14) Exit" << endl;
     cout << "\n========================================" << endl;
     cout << "Enter your choice: ";
 }
@@ -63,7 +64,7 @@ void playSUSGame() {
     cout << "\n=== Starting SUS Game ===\n" << endl;
 
     SUSBoard* board = new SUSBoard();
-    SUSUI* ui = new SUSUI("SUS Game");
+    SUSUI* ui = new SUSUI("Welcome to our SUS Game");
     Player<char>** players = ui->setup_players();
     GameManager<char> game(board, players, ui);
     game.run();
@@ -158,10 +159,10 @@ void playFourXFourGame() {
 }
 
 void playDiamondGame() {
-    // cout << "\n=== Starting Diamond Tic-Tac-Toe ===\n" << endl;
-    // cout << "Rules: You must make a line of 3 AND a line of 4 at the same time!\n";
-    // cout << "       The two lines must be in different directions (horizontal, vertical, diagonal)\n";
-    // cout << "       They can share only one common cell.\n" << endl;
+    cout << "\n=== Starting Diamond Tic-Tac-Toe ===\n" << endl;
+    cout << "Rules: You must make a line of 3 AND a line of 4 at the same time!\n";
+    cout << "       The two lines must be in different directions (horizontal, vertical, diagonal)\n";
+    cout << "       They can share only one common cell.\n" << endl;
 
     try {
         DiamondBoard* board = new DiamondBoard();
@@ -206,7 +207,8 @@ void chooseGame(int choice) {
 
 int main() {
     cout << "Initializing Games Application..." << endl;
-
+    srand(time(0));
+    
     while (true) {
         int choice;
         displayMenu();

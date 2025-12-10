@@ -4,6 +4,7 @@
 SUSUI::SUSUI(string message) : UI<char>(message, 3) {
     susBoard = new SUSBoard();
     player1Score = player2Score = 0;
+    srand(time(0));
 }
 
 SUSUI::~SUSUI() {
@@ -22,6 +23,8 @@ Move<char>* SUSUI::get_move(Player<char>* player) {
             std::cout << "Invalid position. Please enter values between 0 and 2.\n";
         } else {
             break;
+        } else {
+            std::cout << "Position already occupied. Choose another.\n";
         }
     }
 

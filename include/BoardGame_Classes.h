@@ -23,7 +23,7 @@ template <typename T> class Move;
  */
 enum class PlayerType {
     HUMAN,     ///< A human player.
-    COMPUTER,  ///< A computer-controlled player.
+    COMPUTER,  ///< A computer-controlled player (AI)
     AI,        ///< An AI player.
     RANDOM     ///< A Random player.
 };
@@ -126,7 +126,7 @@ class Player {
 protected:
     string name;         ///< Player name
     PlayerType type;     ///< Player type (e.g., HUMAN or COMPUTER)
-    T symbol;            ///< Player�s symbol on board
+    T symbol;            ///< Players symbol on board
     Board<T>* boardPtr;  ///< Pointer to the game board
 
 public:
@@ -225,16 +225,15 @@ public:
         int rows = matrix.size();
         int cols = matrix[0].size();
 
-        cout << "\n    ";
-        for (int j = 0; j < cols; ++j)
-            cout << setw(cell_width + 1) << j;
-        cout << "\n   " << string((cell_width + 2) * cols, '-') << "\n";
-
+        cout << "\n";
         for (int i = 0; i < rows; ++i) {
-            cout << setw(2) << i << " |";
-            for (int j = 0; j < cols; ++j)
-                cout << setw(cell_width) << matrix[i][j] << " |";
-            cout << "\n   " << string((cell_width + 2) * cols, '-') << "\n";
+            cout << i << " |";
+            for (int j = 0; j < cols; ++j) {
+                char displayChar = matrix[i][j];
+                if (displayChar == ' ') displayChar = '.';
+                cout << " " << displayChar << " |";
+            }
+            cout << "\n";
         }
         cout << endl;
     }
@@ -269,30 +268,31 @@ public:
      */
     void run() {
         ui->display_board_matrix(boardPtr->get_board_matrix());
-        Player<T>* currentPlayer = players[0];
-
+        
         while (true) {
             for (int i : {0, 1}) {
-                currentPlayer = players[i];
+                Player<T>* currentPlayer = players[i];
                 Move<T>* move = ui->get_move(currentPlayer);
 
-                while (!boardPtr->update_board(move))
+                while (!boardPtr->update_board(move)) {
+                    delete move;
                     move = ui->get_move(currentPlayer);
+                }
 
                 ui->display_board_matrix(boardPtr->get_board_matrix());
 
                 if (boardPtr->is_win(currentPlayer)) {
                     ui->display_message(currentPlayer->get_name() + " wins!");
+                    delete move;
                     return;
                 }
-                if (boardPtr->is_lose(currentPlayer)) {
-                    ui->display_message(players[1 - i]->get_name() + " wins!");
-                    return;
-                }
+                
                 if (boardPtr->is_draw(currentPlayer)) {
                     ui->display_message("Draw!");
+                    delete move;
                     return;
                 }
+                delete move;
             }
         }
     }
@@ -318,4 +318,4 @@ Player<T>** UI<T>::setup_players() {
     return players;
 }
 
-#endif // _BOARDGAME_CLASSES_H
+#endif // _BOARDGAME_CLASSES_h

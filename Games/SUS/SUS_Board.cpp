@@ -1,3 +1,4 @@
+
 #include "SUS_Board.h"
 #include <iostream>
 
@@ -49,7 +50,7 @@ bool SUSBoard::update_board(Move<char>* move) {
 }
 
 bool SUSBoard::is_win(Player<char>* player) {
-    return false; // Win logic handled in UI
+    return false;
 }
 
 bool SUSBoard::is_lose(Player<char>* player) {
@@ -74,4 +75,9 @@ int SUSBoard::getScore() const {
 
 bool SUSBoard::isFull() const {
     return n_moves == 9;
+}
+
+bool SUSBoard::isPositionEmpty(int x, int y) const {
+    if (x < 0 || x >= 3 || y < 0 || y >= 3) return false;
+    return board[x][y] == ' ';
 }

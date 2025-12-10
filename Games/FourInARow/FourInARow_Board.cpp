@@ -17,16 +17,19 @@ bool FourInARowBoard::update_board(Move<char>* move) {
     // find the first empty row from the bottom
     int placeRow = -1;
     for (int r = rows - 1; r >= 0; --r) {
-        if (board[r][col] == ' ') { placeRow = r; break; }
+        if (board[r][col] == ' ') { 
+            placeRow = r; 
+            break; 
+        }
     }
-    if (placeRow == -1) return false; // column full
+    if (placeRow == -1) return false;
 
     board[placeRow][col] = symbol;
     n_moves++;
     return true;
 }
 
-static bool check_four_at(const std::vector<std::vector<char>>& b, int r, int c, int dr, int dc, char sym, int rows, int cols) {
+static bool check_four_at(const std::vector<std::vector<char>>& b, int r, int c, int dr, int dc, char sym) {
     for (int k = 0; k < 4; ++k) {
         int rr = r + k*dr;
         int cc = c + k*dc;
@@ -44,11 +47,11 @@ bool FourInARowBoard::is_win(Player<char>* player) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < columns; ++j) {
             if (b[i][j] != sym) continue;
-            // right, down, diag down-right, diag down-left
-            if (check_four_at(b, i, j, 0, 1, sym, rows, columns)) return true;
-            if (check_four_at(b, i, j, 1, 0, sym, rows, columns)) return true;
-            if (check_four_at(b, i, j, 1, 1, sym, rows, columns)) return true;
-            if (check_four_at(b, i, j, 1, -1, sym, rows, columns)) return true;
+            
+            if (check_four_at(b, i, j, 0, 1, sym)) return true;
+            if (check_four_at(b, i, j, 1, 0, sym)) return true;
+            if (check_four_at(b, i, j, 1, 1, sym)) return true;
+            if (check_four_at(b, i, j, 1, -1, sym)) return true;
         }
     }
     return false;

@@ -18,6 +18,7 @@ public:
     bool game_is_over(Player<char>* player) override;
     int getScore() const;
     bool isFull() const;
+    bool isPositionEmpty(int x, int y) const;
 };
 
 #endif
