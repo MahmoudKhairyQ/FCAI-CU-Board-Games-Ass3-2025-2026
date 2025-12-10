@@ -15,6 +15,8 @@
 #include "FourInARow_UI.h"
 #include "Diamond_Board.h"
 #include "Diamond_UI.h"
+#include "Infinity_Board.h"
+#include "Infinity_UI.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -160,27 +162,35 @@ void playFourXFourGame() {
 
 void playDiamondGame() {
     cout << "\n=== Starting Diamond Tic-Tac-Toe ===\n" << endl;
-    cout << "Rules: You must make a line of 3 AND a line of 4 at the same time!\n";
-    cout << "       The two lines must be in different directions (horizontal, vertical, diagonal)\n";
-    cout << "       They can share only one common cell.\n" << endl;
+    
+    DiamondBoard* board = new DiamondBoard();
+    DiamondUI* ui = new DiamondUI("Diamond Tic-Tac-Toe");
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
 
-    try {
-        DiamondBoard* board = new DiamondBoard();
-        DiamondUI* ui = new DiamondUI("Diamond Tic-Tac-Toe");
-        Player<char>** players = ui->setup_players();
-        GameManager<char> game(board, players, ui);
-        game.run();
-
-        delete players[0];
-        delete players[1];
-        delete[] players;
-        delete ui;
-        delete board;
-    }
-    catch (const exception& e) {
-        cout << "Error starting Diamond game: " << e.what() << endl;
-    }
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
 }
+
+void playInfinityGame() {
+    std::cout << "\n=== Starting Infinity Tic-Tac-Toe ===\n" << std::endl;
+    InfinityBoard* board = new InfinityBoard();
+    InfinityUI* ui = new InfinityUI("Infinity Tic-Tac-Toe", board);
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
+}
+
 
 void chooseGame(int choice) {
     switch (choice) {
@@ -194,7 +204,7 @@ void chooseGame(int choice) {
     case 8: cout << "Pyramid Tic-Tac-Toe - Coming soon!\n"; break;
     case 9: playNumericalGame(); break;
     case 10: playObstaclesGame(); break;
-    case 11: cout << "Infinity Tic-Tac-Toe - Coming soon!\n"; break;
+    case 11: playInfinityGame(); break;
     case 12: cout << "Ultimate Tic Tac Toe - Coming soon!\n"; break;
     case 13: cout << "Memory Tic-Tac-Toe - Coming soon!\n"; break;
     case 14:
