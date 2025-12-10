@@ -2,7 +2,7 @@
 #include "SUS_Board.h"
 #include <iostream>
 
-SUSBoard::SUSBoard() : Board(3, 3) {
+SUSBoard::SUSBoard() : Board<char>(3, 3) {  // Fixed: Board<char> not Board
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
             board[i][j] = ' ';
@@ -50,7 +50,7 @@ bool SUSBoard::update_board(Move<char>* move) {
 }
 
 bool SUSBoard::is_win(Player<char>* player) {
-    return false;
+    return false;  // SUS game doesn't have immediate win condition
 }
 
 bool SUSBoard::is_lose(Player<char>* player) {
@@ -80,4 +80,17 @@ bool SUSBoard::isFull() const {
 bool SUSBoard::isPositionEmpty(int x, int y) const {
     if (x < 0 || x >= 3 || y < 0 || y >= 3) return false;
     return board[x][y] == ' ';
+}
+
+// Helper methods for AI (optional - add if you need them)
+char SUSBoard::getBoardValue(int x, int y) const {
+    if (x < 0 || x >= 3 || y < 0 || y >= 3) return ' ';
+    return board[x][y];
+}
+
+void SUSBoard::setBoardValue(int x, int y, char value) {
+    if (x < 0 || x >= 3 || y < 0 || y >= 3) return;
+    board[x][y] = value;
+    // Note: This doesn't update n_moves or claimed array
+    // Only for simulation purposes
 }

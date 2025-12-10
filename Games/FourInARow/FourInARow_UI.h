@@ -11,7 +11,7 @@ public:
 
     Move<char>* get_move(Player<char>* player) override;
     Player<char>* create_player(std::string& name, char symbol, PlayerType type) override;
-    Player<char>** setup_players() override;
+
 };
 
 #endif

@@ -19,13 +19,20 @@ Move<char>* SUSUI::get_move(Player<char>* player) {
         std::cout << player->get_name() << " (" << letter << "), enter row and column (0-2): ";
         std::cin >> row >> col;
 
+        // 1. Check if position is within board boundaries
         if (row < 0 || row > 2 || col < 0 || col > 2) {
             std::cout << "Invalid position. Please enter values between 0 and 2.\n";
-        } else {
-            break;
-        } else {
-            std::cout << "Position already occupied. Choose another.\n";
+            continue;  // Go back to start of loop
         }
+        
+        // 2. Check if position is already occupied
+        if (!susBoard->isPositionEmpty(row, col)) {
+            std::cout << "Position already occupied. Choose another.\n";
+            continue;  // Go back to start of loop
+        }
+        
+        // 3. If everything is OK, break out of loop
+        break;
     }
 
     return new Move<char>(row, col, letter);

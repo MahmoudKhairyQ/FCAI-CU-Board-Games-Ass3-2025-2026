@@ -17,8 +17,12 @@ public:
     Connect4_AI(char aiSym, char oppSym) : aiSymbol(aiSym), opponentSymbol(oppSym) {}
     
     bool checkWin(const vector<vector<char>>& board, char symbol) {
-        for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 4; col++) {
+        int rows = board.size();
+        int cols = (rows > 0) ? board[0].size() : 0;
+        
+        // Check horizontal
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols - 3; col++) {
                 if (board[row][col] == symbol && 
                     board[row][col+1] == symbol && 
                     board[row][col+2] == symbol && 
@@ -28,8 +32,9 @@ public:
             }
         }
         
-        for (int col = 0; col < 7; col++) {
-            for (int row = 0; row < 3; row++) {
+        // Check vertical
+        for (int col = 0; col < cols; col++) {
+            for (int row = 0; row < rows - 3; row++) {
                 if (board[row][col] == symbol && 
                     board[row+1][col] == symbol && 
                     board[row+2][col] == symbol && 
@@ -39,8 +44,9 @@ public:
             }
         }
         
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 4; col++) {
+        // Check diagonal (down-right)
+        for (int row = 0; row < rows - 3; row++) {
+            for (int col = 0; col < cols - 3; col++) {
                 if (board[row][col] == symbol && 
                     board[row+1][col+1] == symbol && 
                     board[row+2][col+2] == symbol && 
@@ -50,8 +56,9 @@ public:
             }
         }
         
-        for (int row = 0; row < 3; row++) {
-            for (int col = 3; col < 7; col++) {
+        // Check diagonal (down-left)
+        for (int row = 0; row < rows - 3; row++) {
+            for (int col = 3; col < cols; col++) {
                 if (board[row][col] == symbol && 
                     board[row+1][col-1] == symbol && 
                     board[row+2][col-2] == symbol && 
@@ -65,20 +72,31 @@ public:
     }
     
     int getBestMove(const vector<vector<char>>& board) {
-        if (board[0][3] == ' ') return 3;
+        int rows = board.size();
+        int cols = (rows > 0) ? board[0].size() : 0;
         
+        // If center is available, take it
+        if (cols > 3 && board[0][3] == ' ') {
+            return 3;
+        }
+        
+        // Get all available columns
         vector<int> available;
-        for (int col = 0; col < 7; col++) {
+        for (int col = 0; col < cols; col++) {
             if (board[0][col] == ' ') {
                 available.push_back(col);
             }
         }
         
-        if (available.empty()) return 3;
+        if (available.empty()) {
+            return 3; // Default to center if no available
+        }
         
+        // 1. Check if AI can win immediately
         for (int col : available) {
             vector<vector<char>> tempBoard = board;
-            for (int row = 5; row >= 0; row--) {
+            // Find the row to place the piece
+            for (int row = rows - 1; row >= 0; row--) {
                 if (tempBoard[row][col] == ' ') {
                     tempBoard[row][col] = aiSymbol;
                     if (checkWin(tempBoard, aiSymbol)) {
@@ -89,9 +107,10 @@ public:
             }
         }
         
+        // 2. Check if need to block opponent's immediate win
         for (int col : available) {
             vector<vector<char>> tempBoard = board;
-            for (int row = 5; row >= 0; row--) {
+            for (int row = rows - 1; row >= 0; row--) {
                 if (tempBoard[row][col] == ' ') {
                     tempBoard[row][col] = opponentSymbol;
                     if (checkWin(tempBoard, opponentSymbol)) {
@@ -102,16 +121,23 @@ public:
             }
         }
         
-        if (!available.empty()) {
-            for (int col : {3, 2, 4, 1, 5, 0, 6}) {
-                for (int availableCol : available) {
-                    if (availableCol == col) {
-                        return col;
-                    }
+        // 3. Try to create future opportunities (center first)
+        vector<int> preferredOrder = {3, 2, 4, 1, 5, 0, 6};
+        for (int col : preferredOrder) {
+            // Check if column is in available list
+            bool isAvailable = false;
+            for (int availCol : available) {
+                if (availCol == col) {
+                    isAvailable = true;
+                    break;
                 }
+            }
+            if (isAvailable) {
+                return col;
             }
         }
         
+        // 4. Fallback: return first available column
         return available[0];
     }
 };
@@ -122,45 +148,8 @@ FourInARowUI::FourInARowUI(std::string message) : UI<char>(message, 3) {
 
 FourInARowUI::~FourInARowUI() {}
 
-Player<char>** FourInARowUI::setup_players() {
-    Player<char>** players = new Player<char>*[2];
-    
-    // Player X
-    string nameX;
-    cout << "Enter Player X name: ";
-    cin.ignore();
-    getline(cin, nameX);
-    
-    cout << "Choose Player X type:" << endl;
-    cout << "1. Human" << endl;
-    cout << "2. Computer" << endl;
-    
-    int choiceX;
-    cin >> choiceX;
-    
-    PlayerType typeX = (choiceX == 2) ? PlayerType::COMPUTER : PlayerType::HUMAN;
-    players[0] = create_player(nameX, 'X', typeX);
-    
-    // Player O
-    string nameO;
-    cout << "Enter Player O name: ";
-    cin.ignore();
-    getline(cin, nameO);
-    
-    cout << "Choose Player O type:" << endl;
-    cout << "1. Human" << endl;
-    cout << "2. Computer" << endl;
-    
-    int choiceO;
-    cin >> choiceO;
-    
-    PlayerType typeO = (choiceO == 2) ? PlayerType::COMPUTER : PlayerType::HUMAN;
-    players[1] = create_player(nameO, 'O', typeO);
-    
-    return players;
-}
-
 Move<char>* FourInARowUI::get_move(Player<char>* player) {
+    // Handle computer player
     if (player->get_type() == PlayerType::COMPUTER) {
         char aiSymbol = player->get_symbol();
         char opponentSymbol = (aiSymbol == 'X') ? 'O' : 'X';
@@ -182,6 +171,7 @@ Move<char>* FourInARowUI::get_move(Player<char>* player) {
         return new Move<char>(0, bestCol, aiSymbol);
     }
     
+    // Handle human player
     int col;
     
     while (true) {
@@ -200,11 +190,11 @@ Move<char>* FourInARowUI::get_move(Player<char>* player) {
             continue;
         }
 
-       // check if the column is full (top spot isn’t empty)
+        // Check if the column is full
         Board<char>* bptr = player->get_board_ptr();
         if (bptr) {
             auto mat = bptr->get_board_matrix();
-            if (mat.size() > 0 && mat[0][col] != ' ') {
+            if (!mat.empty() && mat[0][col] != ' ') {
                 cout << "Column is full. Choose another column.\n";
                 continue;
             }
@@ -224,6 +214,3 @@ Player<char>* FourInARowUI::create_player(std::string& name, char symbol, Player
     return new Player<char>(name, symbol, type);
 }
 
-Player<char>** FourInARowUI::setup_players() {
-    return UI<char>::setup_players();  
-}
