@@ -3,8 +3,8 @@
 #include "Numerical_UI.h"
 #include "SUS_Board.h"
 #include "SUS_UI.h"
-#include "FiveXFive_Board.h"
-#include "FiveXFive_UI.h"
+#include "5x5_Tik_tac_toe_Board.h"
+#include "5x5_Tik_tac_toe_ui.h"
 #include "Misere_Board.h"
 #include "Misere_UI.h"
 #include "FourXFour_Board.h"
@@ -15,6 +15,8 @@
 #include "FourInARow_UI.h"
 #include "Diamond_Board.h"
 #include "Diamond_UI.h"
+#include "Word_Tic_tac_board.h"
+#include "Word_Tic_tac_ui.h"
 #include "Infinity_Board.h"
 #include "Infinity_UI.h"
 #include <iostream>
@@ -44,6 +46,37 @@ void displayMenu() {
     cout << "14) Exit" << endl;
     cout << "\n========================================" << endl;
     cout << "Enter your choice: ";
+}
+void playWord_Tic_tac_toe() {
+    cout << "\n=== Starting Word Tic-tac-toe ===\n" << endl;
+    
+    // Ask if player wants to play vs Human or AI
+    cout << "Choose game mode:\n";
+    cout << "1. Human vs Human\n";
+    cout << "2. Human vs AI\n";
+    cout << "Enter choice: ";
+    int mode;
+    cin >> mode;
+    
+    bool vsAI = (mode == 2);
+    
+    Word_Tik_tak_Board board;
+    Word_Tik_tak_UI ui(board, vsAI);
+    ui.playGame();
+}
+void playInfinityGame() {
+    std::cout << "\n=== Starting Infinity Tic-Tac-Toe ===\n" << std::endl;
+    InfinityBoard* board = new InfinityBoard();
+    InfinityUI* ui = new InfinityUI("Infinity Tic-Tac-Toe", board);
+    Player<char>** players = ui->setup_players();
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete ui;
+    delete board;
 }
 
 void playNumericalGame() {
@@ -80,18 +113,21 @@ void playSUSGame() {
 
 void playFiveXFiveGame() {
     cout << "\n=== Starting 5x5 Tic Tac Toe ===\n" << endl;
-
-    FiveXFiveBoard* board = new FiveXFiveBoard();
-    FiveXFiveUI* ui = new FiveXFiveUI("5x5 Tic Tac Toe");
-    Player<char>** players = ui->setup_players();
-    GameManager<char> game(board, players, ui);
-    game.run();
-
-    delete players[0];
-    delete players[1];
-    delete[] players;
-    delete ui;
-    delete board;
+    
+    // Ask if player wants to play vs Human or AI
+    cout << "Choose game mode:\n";
+    cout << "1. Human vs Human\n";
+    cout << "2. Human vs AI\n";
+    cout << "Enter choice: ";
+    int mode;
+    cin >> mode;
+    cin.ignore(10000, '\n');  // Clear input buffer
+    
+    bool vsAI = (mode == 2);
+    
+    Tik_tac_toe_B board;
+    Tic_tac_toe_ui ui(board, vsAI);
+    ui.playGame();
 }
 
 void playMisereGame() {
@@ -162,7 +198,6 @@ void playFourXFourGame() {
 
 void playDiamondGame() {
     cout << "\n=== Starting Diamond Tic-Tac-Toe ===\n" << endl;
-    
     DiamondBoard* board = new DiamondBoard();
     DiamondUI* ui = new DiamondUI("Diamond Tic-Tac-Toe");
     Player<char>** players = ui->setup_players();
@@ -176,28 +211,12 @@ void playDiamondGame() {
     delete board;
 }
 
-void playInfinityGame() {
-    std::cout << "\n=== Starting Infinity Tic-Tac-Toe ===\n" << std::endl;
-    InfinityBoard* board = new InfinityBoard();
-    InfinityUI* ui = new InfinityUI("Infinity Tic-Tac-Toe", board);
-    Player<char>** players = ui->setup_players();
-    GameManager<char> game(board, players, ui);
-    game.run();
-
-    delete players[0];
-    delete players[1];
-    delete[] players;
-    delete ui;
-    delete board;
-}
-
-
 void chooseGame(int choice) {
-    switch (choice) {
+switch (choice) {
     case 1: playSUSGame(); break;
     case 2: playFourInARowGame(); break;
     case 3: playFiveXFiveGame(); break;
-    case 4: cout << "Word Tic-Tac-Toe - Coming soon!\n"; break;
+    case 4: playWord_Tic_tac_toe(); break;
     case 5: playMisereGame(); break;
     case 6: playDiamondGame(); break;
     case 7: playFourXFourGame(); break;
