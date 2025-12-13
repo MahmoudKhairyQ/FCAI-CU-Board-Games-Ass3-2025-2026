@@ -7,10 +7,12 @@
 class SUSBoard : public Board<char> {
 private:
     bool claimed[8];
+    char lineOwner[8];
     bool lineMatchesSUS(int lineIdx) const;
+    int calculatePlayerScore(char playerSymbol) const;
 
 protected:
-    using Board<char>::board; // <-- Add this line to make 'board' accessible
+    using Board<char>::board;
 
 public:
     SUSBoard();
@@ -19,11 +21,16 @@ public:
     bool is_lose(Player<char>* player) override;
     bool is_draw(Player<char>* player) override;
     bool game_is_over(Player<char>* player) override;
-    int getScore() const;
+
+    int getTotalScore() const;
+    int getPlayerScore(char playerSymbol) const;
     bool isFull() const;
     bool isPositionEmpty(int x, int y) const;
     char getBoardValue(int x, int y) const;
-    void setBoardValue(int x, int y, char value); // <-- Add declaration if missing
+    void setBoardValue(int x, int y, char value);
+    bool checkSUSWin(Player<char>* player);
+    bool checkGameOver();
+    pair<int, int> getFinalScores() const;
 };
 
 #endif

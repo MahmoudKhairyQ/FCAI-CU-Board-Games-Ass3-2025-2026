@@ -13,7 +13,6 @@ public:
     bool is_lose(Player<char>* player) override;
     bool is_draw(Player<char>* player) override;
     bool game_is_over(Player<char>* player) override;
-    bool check_four_at(const std::vector<std::vector<char>>& b, int r, int c, int dr, int dc, char sym);
 };
 
 #endif

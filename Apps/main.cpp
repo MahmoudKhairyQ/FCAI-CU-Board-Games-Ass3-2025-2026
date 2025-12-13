@@ -41,7 +41,7 @@ void displayMenu() {
     cout << "5) Misere Tic Tac Toe" << endl;
     cout << "6) Diamond Tic-Tac-Toe" << endl;
     cout << "7) 4 x 4 Tic-Tac-Toe" << endl;
-    cout << "8) Pyramid Tic-Tac-Toe" << endl;
+    cout << "8) Pyramid Tic Tac Toe" << endl;
     cout << "9) Numerical Tic-Tac-Toe" << endl;
     cout << "10) Obstacles Tic-Tac-Toe" << endl;
     cout << "11) Infinity Tic-Tac-Toe" << endl;
@@ -51,25 +51,26 @@ void displayMenu() {
     cout << "\n========================================" << endl;
     cout << "Enter your choice: ";
 }
+
 void playWord_Tic_tac_toe() {
     cout << "\n=== Starting Word Tic-tac-toe ===\n" << endl;
-    
-    // Ask if player wants to play vs Human or AI
+
     cout << "Choose game mode:\n";
     cout << "1. Human vs Human\n";
     cout << "2. Human vs AI\n";
     cout << "Enter choice: ";
     int mode;
     cin >> mode;
-    
+
     bool vsAI = (mode == 2);
-    
+
     Word_Tik_tak_Board board;
     Word_Tik_tak_UI ui(board, vsAI);
     ui.playGame();
 }
+
 void playInfinityGame() {
-    std::cout << "\n=== Starting Infinity Tic-Tac-Toe ===\n" << std::endl;
+    cout << "\n=== Starting Infinity Tic-Tac-Toe ===\n" << endl;
     InfinityBoard* board = new InfinityBoard();
     InfinityUI* ui = new InfinityUI("Infinity Tic-Tac-Toe", board);
     Player<char>** players = ui->setup_players();
@@ -101,34 +102,27 @@ void playNumericalGame() {
 
 void playSUSGame() {
     cout << "\n=== Starting SUS Game ===\n" << endl;
+    cout << "Rules: Place S or U to form SUS sequences (S-U-S) in rows, columns, or diagonals.\n";
+    cout << "Player with most SUS sequences wins!\n" << endl;
 
-    SUSBoard* board = new SUSBoard();
-    SUSUI* ui = new SUSUI("Welcome to our SUS Game");
-    Player<char>** players = ui->setup_players();
-    GameManager<char> game(board, players, ui);
-    game.run();
-
-    delete players[0];
-    delete players[1];
-    delete[] players;
+    SUSUI* ui = new SUSUI("Welcome to SUS Game!");
+    ui->run_game();
     delete ui;
-    delete board;
 }
 
 void playFiveXFiveGame() {
     cout << "\n=== Starting 5x5 Tic Tac Toe ===\n" << endl;
-    
-    // Ask if player wants to play vs Human or AI
+
     cout << "Choose game mode:\n";
     cout << "1. Human vs Human\n";
     cout << "2. Human vs AI\n";
     cout << "Enter choice: ";
     int mode;
     cin >> mode;
-    cin.ignore(10000, '\n');  // Clear input buffer
-    
+    cin.ignore(10000, '\n');
+
     bool vsAI = (mode == 2);
-    
+
     Tik_tac_toe_B board;
     Tic_tac_toe_ui ui(board, vsAI);
     ui.playGame();
@@ -248,7 +242,7 @@ void playDiamondGame() {
 }
 
 void chooseGame(int choice) {
-switch (choice) {
+    switch (choice) {
     case 1: playSUSGame(); break;
     case 2: playFourInARowGame(); break;
     case 3: playFiveXFiveGame(); break;
@@ -273,7 +267,7 @@ switch (choice) {
 int main() {
     cout << "Initializing Games Application..." << endl;
     srand(time(0));
-    
+
     while (true) {
         int choice;
         displayMenu();
