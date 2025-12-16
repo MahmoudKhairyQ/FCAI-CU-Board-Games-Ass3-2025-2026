@@ -23,6 +23,7 @@
 #include "Word_Tic_tac_ui.h"
 #include "Infinity_Board.h"
 #include "Infinity_UI.h"
+#include "Memory_Tic_Tac_Toe.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -241,6 +242,14 @@ void playDiamondGame() {
     delete board;
 }
 
+void playMemoryGame() {
+    cout << "\n=== Starting Memory Tic-Tac-Toe ===\n" << endl;
+    cout << "Rules: Moves are hidden after being placed! Remember where pieces are!\n" << endl;
+
+    MemoryTicTacToe game("AI_Player");
+    game.play();
+}
+
 void chooseGame(int choice) {
     switch (choice) {
     case 1: playSUSGame(); break;
@@ -255,7 +264,7 @@ void chooseGame(int choice) {
     case 10: playObstaclesGame(); break;
     case 11: playInfinityGame(); break;
     case 12: playUltimateGame(); break;
-    case 13: cout << "Memory Tic-Tac-Toe - Coming soon!\n"; break;
+    case 13: playMemoryGame(); break;
     case 14:
         cout << "\nExiting the application. Goodbye!\n" << endl;
         exit(0);
